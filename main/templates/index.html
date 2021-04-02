@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opening Day</title>
+</head>
+<body>
+    <h1>Happy Opening day! ⚾️</h1>
+
+    <h4>Create Team</h4>
+    <form action="/newTeam" method="POST">
+        {% csrf_token %}
+        <label for="name">Name:</label>
+        <input type="text" name="name">
+        <br>
+        <label for="wins">Wins:</label>
+        <input type="number" name="wins">
+        <br>
+        <label for="location">Location:</label>
+        <input type="text" name="location">
+        <br>
+        <label for="mascot">Mascot:</label>
+        <input type="text" name="mascot">
+        <br>
+        <button>Create Team</button>
+    </form>
+    <hr>
+    <h4>Create Player</h4>
+    <form action="/newPlayer" method="POST">
+        {% csrf_token %}
+        <label for="name">Name:</label>
+        <input type="text" name="name">
+        <br>
+        <label for="jersey">Jersey Number:</label>
+        <input type="number" name="jersey">
+        <br>
+        <label for="position">Position:</label>
+        <input type="text" name="position">
+        <br>
+        <label for="bat_avg">Batting Avg:</label>
+        <input type="number" name="bat_avg">
+        <br>
+        <label for="curr_team">Current Team:</label>
+        <select name="curr_team" id="">
+            {% for team in all_teams%}
+            <option value="{{team.id}}">{{team.name}}</option>
+        {% endfor %}
+        </select>
+        <button>Create Player</button>
+    </form>
+
+    {% for player in all_players %}
+    <p>{{player.name}}</p>
+    <p>{{player.jersey_number}}</p>
+    <p>{{player.current_team.name}}</p>
+    {% endfor %}
+
+    <h2>All Teams:</h2>
+    {% for team in all_teams %}
+    <p>Team Name: {{team.name}}</p>
+    <p>Location: {{team.location}}</p>
+    <p>Mascot: {{team.mascot}}</p>
+    <p>Wins: {{team.wins}}</p>
+    <p>All Players: </p>
+    <ul>
+        {% for curr_players in team.current_players.all %}
+        <li>{{curr_players.name}}</li>
+        {% endfor%}
+    </ul>
+    <hr>
+
+    {% endfor %}
+</body>
+</html>
